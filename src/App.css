@@ -40,3 +40,22 @@
 .read-the-docs {
   color: #888;
 }
+.trending-rank {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -58%);
+  font-size: 12rem;
+  font-family: 'Montserrat', 'Oswald', 'Roboto', Arial, sans-serif;
+  font-weight: 800;
+  color: white;
+  opacity: 1;
+  z-index: 1;
+  -webkit-text-stroke: 8px #092267;
+  text-stroke: 8px #092267;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
