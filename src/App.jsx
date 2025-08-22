@@ -11,10 +11,12 @@ const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+ 
   const [movieList, setMovieList] = useState([]);
-  const [popularMovies, setPopularMovies] = useState([]);
   const [trendingMovies, setTrendingMovies] = useState([]);
+   const [errorMessage, setErrorMessage] = useState('');
+  const [popularMovies, setPopularMovies] = useState([]);
+  
   const [isLoading, setIsLoading] = useState(false);
 
   useDebounce(() => {
