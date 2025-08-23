@@ -1,10 +1,11 @@
-import React from 'react';
+import React from 'react'
 
 const Search = ({ searchTerm, setSearchTerm }) => {
   return (
     <div className="search">
       <div>
-        <img src="/search.svg" alt="search" />
+        <img src="search.svg" alt="search" />
+
         <input
           type="text"
           placeholder="Search through thousands of movies"
@@ -13,7 +14,6 @@ const Search = ({ searchTerm, setSearchTerm }) => {
         />
       </div>
     </div>
-  );
-};
-
-export default Search;
+  )
+}
+export default Search

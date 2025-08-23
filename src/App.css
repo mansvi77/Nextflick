@@ -1,3 +1,4 @@
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -42,20 +43,27 @@
 }
 .trending-rank {
   position: absolute;
-  top: 52%;
-  left: 50%;
-  transform: translate(-50%, -58%);
-  font-size: 12rem;
-  font-family: 'Montserrat', 'Oswald', 'Roboto', Arial, sans-serif;
-  font-weight: 800;
-  color: white;
+  left: -85px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16rem;
+  font-weight: 900;
+  color: rgba(255,255,255,0.18);
+  -webkit-text-stroke: 4px rgba(255,255,255,0.9);
+  text-shadow: 0 2px 16px rgba(30,30,30,0.18);
   opacity: 1;
-  z-index: 1;
-  -webkit-text-stroke: 8px #092267;
-  text-stroke: 8px #092267;
+  z-index: 3;
   line-height: 1;
   pointer-events: none;
   user-select: none;
+  height: 230px;
+  display: flex;
+  align-items: center;
 }
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

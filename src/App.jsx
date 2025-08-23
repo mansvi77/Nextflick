@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Search from './components/search.jsx';
-import Spinner from './components/spinner.jsx';
+import Search from './components/Search.jsx';
+import Spinner from './components/Spinner.jsx';
 import MovieCard from './components/MovieCard.jsx';
 import { useDebounce } from 'react-use';
 import { updateSearchCount } from './appwrite.js';
@@ -11,17 +11,13 @@ const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
 const App = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
- 
   const [movieList, setMovieList] = useState([]);
   const [trendingMovies, setTrendingMovies] = useState([]);
-   const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [popularMovies, setPopularMovies] = useState([]);
-  
   const [isLoading, setIsLoading] = useState(false);
 
-  useDebounce(() => {
-    setDebouncedSearchTerm(searchTerm);
-  }, 500, [searchTerm]);
+  useDebounce(() => setDebouncedSearchTerm(searchTerm), 500, [searchTerm]);
 
   useEffect(() => {
     const fetchPopularMovies = async () => {
@@ -80,7 +76,7 @@ const App = () => {
           setMovieList([]);
         } else {
           setMovieList(data.results);
-          await updateSearchCount(debouncedSearchTerm, data.results[0]);
+          await updateSearchCount(debouncedSearchTerm, data.results);
         }
       } catch (error) {
         setErrorMessage('Error fetching movies, please try again later');
@@ -103,37 +99,74 @@ const App = () => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
+        width: '100vw',
+        overflowX: 'hidden',
       }}
     >
-      <header>
+      <header className="max-w-screen-lg w-full mx-auto px-4">
         <h1 className="text-5xl font-bold text-center mb-4 text-white">
           Find <span className="text-gradient">Movies</span> You'll Enjoy Without the Hassle
         </h1>
-        <img src="/hero.png" alt="Hero Banner" className="mb-6" />
+        <img src="/hero.png" alt="Hero Banner" className="mb-6 mx-auto" />
       </header>
 
-      {/* Trending Movies Section */}
-      <section className="w-full max-w-7xl mb-14">
+      {/* Trending Section */}
+      <section className="w-full max-w-screen-lg mb-14 px-4">
         <h2 className="text-white text-3xl font-semibold mb-4 pl-2">Trending Movies</h2>
         <div
-          className="flex flex-row gap-8 justify-start items-end pb-4 overflow-x-auto no-scrollbar"
+          className="flex flex-row gap-8 justify-start items-center pb-4 overflow-x-auto no-scrollbar"
+          style={{ paddingLeft: '40px', alignItems: 'center' }}
         >
           {trendingMovies.map((movie, idx) => (
             <div
               key={movie.id}
-              className="relative flex flex-col items-center"
-              style={{ width: 220, minWidth: 220, height: 350 }}
+              className="relative flex items-center rounded-lg overflow-visible"
+              style={{
+                width: 140,
+                height: 230,
+                marginRight: '2rem',
+                backgroundColor: '#1a1f2e',
+                boxShadow: '0 0 10px rgba(0,0,0,0.4)',
+              }}
             >
-              {/* Outlined and centered huge number */}
-              <span className="trending-rank">{idx + 1}</span>
-              <MovieCard movie={movie} fallbackPoster="/no-movie.png" />
+              <span
+                className="trending-rank"
+                style={{
+                  position: 'absolute',
+                  left: '-85px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  fontSize: '16rem',
+                  fontWeight: 900,
+                  color: 'rgba(255,255,255,0.18)',
+                  WebkitTextStroke: '4px rgba(255,255,255,0.9)',
+                  textShadow: '0 2px 16px rgba(30,30,30,0.18)',
+                  zIndex: 3,
+                  lineHeight: 1,
+                  pointerEvents: 'none',
+                  userSelect: 'none',
+                  height: '230px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  opacity: 1,
+                }}
+              >
+                {idx + 1}
+              </span>
+              <div style={{ width: '140px', height: '230px', zIndex: 4 }}>
+                <MovieCard movie={movie} fallbackPoster="/no-movie.png" />
+              </div>
             </div>
           ))}
         </div>
       </section>
 
-      <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      {/* Search */}
+      <div className="max-w-screen-lg w-full px-4">
+        <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      </div>
 
+      {/* Loading and Error Messages */}
       {isLoading && (
         <div className="mt-4">
           <Spinner />
@@ -142,16 +175,44 @@ const App = () => {
       {errorMessage && <p className="text-red-500 mt-4">{errorMessage}</p>}
 
       {/* All Movies Section */}
-      <section className="w-full max-w-7xl mt-10 mb-20">
+      <section className="w-full max-w-screen-lg mt-10 mb-20 px-4">
         <h2 className="text-white text-3xl font-semibold mb-4 pl-2">All Movies</h2>
-        <div
-          className="movie-list grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-8 w-full"
-        >
+        <div className="movie-list grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-8 w-full">
           {moviesToShow.map((movie) => (
             <MovieCard key={movie.id} movie={movie} fallbackPoster="/no-movie.png" />
           ))}
         </div>
       </section>
+
+      {/* Custom styles */}
+      <style>{`
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .trending-rank {
+          position: absolute;
+          left: -85px;
+          top: 50%;
+          transform: translateY(-50%);
+          font-size: 16rem;
+          font-weight: 900;
+          color: rgba(255,255,255,0.18);
+          -webkit-text-stroke: 4px rgba(255,255,255,0.9);
+          text-shadow: 0 2px 16px rgba(30,30,30,0.18);
+          opacity: 1;
+          z-index: 3;
+          line-height: 1;
+          pointer-events: none;
+          user-select: none;
+          height: 230px;
+          display: flex;
+          align-items: center;
+        }
+      `}</style>
     </main>
   );
 };
